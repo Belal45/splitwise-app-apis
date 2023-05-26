@@ -1,0 +1,7 @@
+package com.clearexpenses.main.service;
+
+public interface ExpensesServices {
+	
+	public  String createGroup(groupRequest);
+
+}

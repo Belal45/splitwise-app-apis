@@ -1,0 +1,5 @@
+package com.clearexpenses.main.entities;
+
+public class Group {
+
+}

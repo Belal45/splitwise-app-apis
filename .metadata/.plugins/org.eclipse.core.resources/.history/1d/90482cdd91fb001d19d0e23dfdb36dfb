@@ -1,0 +1,14 @@
+package com.clearexpenses.main.entities;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="users_table")
+public class Users {
+	private Long id;
+	private String name;
+	private String mobile;
+	private String address;
+
+}

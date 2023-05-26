@@ -1,0 +1,5 @@
+package com.clearexpenses.main.repositories;
+
+public interface UserRepository {
+
+}

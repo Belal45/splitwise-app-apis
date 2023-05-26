@@ -1,0 +1,17 @@
+package com.clearexpenses.main.entities;
+
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="group_table")
+public class Group {
+	private Long id;
+	private String name;
+	@OneToMany
+	private List<Users> users;
+
+}

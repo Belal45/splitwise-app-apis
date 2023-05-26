@@ -1,0 +1,18 @@
+package com.clearexpenses.main.controller;
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.clearexpenses.main.dtos.GroupRequest;
+
+@RestController
+@RequestMapping("/API")
+public class MyController {
+	
+	@RequestMapping(value="/createGroup" ,method = RequestMethod.POST)
+	public String createGroup(@RequestMapping GroupRequest gsroupRequest) {
+		
+	}
+
+}

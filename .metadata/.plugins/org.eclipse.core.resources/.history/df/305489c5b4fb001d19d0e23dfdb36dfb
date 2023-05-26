@@ -1,0 +1,15 @@
+package com.clearexpenses.main.entities;
+
+import java.time.LocalDate;istence.Entity;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name="user_items_table")
+public class UserItems {
+	private Long id;
+	private String name;
+	private float price;
+	private LocalDate date;
+	
+
+}

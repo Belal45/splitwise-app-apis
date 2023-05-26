@@ -1,0 +1,15 @@
+package com.clearexpenses.main.service;
+
+import java.util.List;
+
+import com.clearexpenses.main.dtos.GroupRequest;
+import com.clearexpenses.main.entities.Users;
+
+public interface ExpensesServices {
+	
+	public  Boolean createGroup(GroupRequest groupRequest);
+	public  List<Users> addUsersByGroup(GroupRequest groupRequest);
+	
+	
+
+}
