@@ -1,6 +1,7 @@
 package com.clearexpenses.main.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,12 @@ public class MyController {
 	/* controller to create the new expenses group */
 	
 	@RequestMapping(value="/createGroup" ,method = RequestMethod.POST)
-	public ResponseEntity<String> createGroup(@RequestBody GroupRequest groupRequest) {
-		 Boolean status = expensesServices.createGroup(groupRequest);
-		 if(status)
-			 return ResponseEntity.status(HttpStatus.OK).body("group successfully created.");
+	public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest) {
+		 Map<String, Object> creationResp = expensesServices.createGroup(groupRequest);
+		 if(creationResp.get("statusCode").equals("200"))
+			 return ResponseEntity.ok(creationResp);
 		 else 
-			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("group successfully created.");
+			 return ResponseEntity.ok(creationResp);
 
 	}
 	

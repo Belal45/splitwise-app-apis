@@ -1,5 +1,6 @@
 package com.clearexpenses.main.entities;
 
+import java.util.Date;
 import java.util.List;
 
 import jakarta.persistence.CascadeType;
@@ -20,6 +21,9 @@ public class ExpensesGroup {
 	private Long id;
 	@Column(name="user_name")
 	private String name;
+	private Boolean Status;
+	private String createDate;
+	private String updateDate;
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Users> users;
 	public Long getId() {
@@ -40,6 +44,26 @@ public class ExpensesGroup {
 	public void setUsers(List<Users> users) {
 		this.users = users;
 	}
+	public Boolean getStatus() {
+		return Status;
+	}
+	public void setStatus(Boolean status) {
+		Status = status;
+	}
+	public String getCreateDate() {
+		return createDate;
+	}
+	public void setCreateDate(String createDate) {
+		this.createDate = createDate;
+	}
+	public String getUpdateDate() {
+		return updateDate;
+	}
+	public void setUpdateDate(String updateDate) {
+		this.updateDate = updateDate;
+	}
+
+	
 	
 
 }

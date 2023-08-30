@@ -1,8 +1,12 @@
 package com.clearexpenses.main.service.serviceImplementation;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,24 +36,46 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 	private ItemsRespository itemsRespository;
 	
 	@Override
-	public Boolean createGroup(GroupRequest groupRequest) {
-		ExpensesGroup res=null;
-		try {
-			ExpensesGroup expensesGroup=new ExpensesGroup();
-			expensesGroup.setName(groupRequest.getGroup_name());
-			expensesGroup.setUsers(null);
-			res = groupRespository.save(expensesGroup);
-		}catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
-		
-		if(res.getId()!=0) 
-			return true;
-		else
-			return false;
-	}
+	public Map<String, Object> createGroup(GroupRequest groupRequest) {
+		Map<String, Object> responseJson = new HashMap<>();
+		ExpensesGroup groupResponse = groupRespository.findByName(groupRequest.getGroup_name());		
+		if(groupResponse==null) {
+			ExpensesGroup res = null;
+			try {
+				Date currentDate = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY mm:hh:ss");
+				ExpensesGroup expensesGroup = new ExpensesGroup();
+				expensesGroup.setName(groupRequest.getGroup_name());
+				expensesGroup.setStatus(true);
+				expensesGroup.setCreateDate(dateFormat.format(currentDate));
+				expensesGroup.setUpdateDate(dateFormat.format(currentDate));
+				expensesGroup.setUsers(null);
+				res = groupRespository.save(expensesGroup);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (res.getId() != 0) {
+				responseJson.put("statusCode", "200");
+				responseJson.put("statusMessage", "group successfully created.");
 
+			} else {
+				responseJson.put("statusCode", "400");
+				responseJson.put("statusMessage", "group creation got failed.");
+
+			}
+		}else {
+			responseJson.put("statusCode", "404");
+			responseJson.put("statusMessage", "this group is already created.");
+
+		}
+	
+
+	
+		return responseJson;
+
+	}
+	
+	
 	@Override
 	public List<Users> addUsersByGroup(GroupRequest groupRequest) {
 		List<Users> userList = new ArrayList<Users>();
