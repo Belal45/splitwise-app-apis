@@ -216,9 +216,8 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 				responseJson.put("message", "group doesn't exist.");
 			}
 		} catch (Exception e) {
-			e.printStackTrace();
-//			responseJson.put("status", "500");
-//			responseJson.put("message", "unable to process.");
+			responseJson.put("status", "500");
+			responseJson.put("message", "unable to process.");
 		}
 
 		return responseJson;
