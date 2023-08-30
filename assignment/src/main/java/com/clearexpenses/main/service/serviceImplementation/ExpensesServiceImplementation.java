@@ -169,8 +169,9 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 	}
 
 	@Override
-	public List<ExpensesResponse> calculateExpenses(Long groupId) {
-		List<ExpensesResponse> response = new ArrayList<ExpensesResponse>();
+	public Map<String, Object> calculateExpenses(Long groupId) {
+		Map<String, Object> responseJson = new HashMap<>();
+
 		try {
 			Optional<ExpensesGroup> groupExist = groupRespository.findById(groupId);
 			if (groupExist.isPresent()) {
@@ -178,13 +179,14 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 				float total = itemsRespository.findTotalExpensesOfAllUsers(groupExist.get().getId());
 
 				if (allItems.size() > 0) {
+					List<ExpensesResponse> response = new ArrayList<ExpensesResponse>();
 
 					int numberOfUsers = allItems.size();
 					float avarageExpeses = total / numberOfUsers;
 
 					for (Object[] itr : allItems) {
 						ExpensesResponse expensesResponse = new ExpensesResponse();
-						expensesResponse.setId((Long) itr[1]);
+						expensesResponse.setId((String) itr[1]);
 						expensesResponse.setName((String) itr[2]);
 						expensesResponse.setMobile((String) itr[3]);
 						Double extraMoney = avarageExpeses - (Double) itr[0];
@@ -197,13 +199,29 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 						}
 						response.add(expensesResponse);
 					}
+					if(response.size()>0){
+						responseJson.put("data", response);
+						responseJson.put("status", "200");
+						responseJson.put("message", "success");
+					}else {
+						responseJson.put("status", "404");
+						responseJson.put("message", "all clear.");
+					}
+				} else {
+					responseJson.put("status", "404");
+					responseJson.put("message", "there is no items to calculate.");
 				}
+			} else {
+				responseJson.put("status", "404");
+				responseJson.put("message", "group doesn't exist.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+//			responseJson.put("status", "500");
+//			responseJson.put("message", "unable to process.");
 		}
 
-		return response;
+		return responseJson;
 	}
 
 }

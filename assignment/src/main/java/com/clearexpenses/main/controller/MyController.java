@@ -23,41 +23,37 @@ import com.clearexpenses.main.service.ExpensesServices;
 @RestController
 @RequestMapping("/API")
 public class MyController {
-	
+
 	@Autowired
 	private ExpensesServices expensesServices;
-	
-	
+
 	/* controller to create the new expenses group */
-	
-	@RequestMapping(value="/createGroup" ,method = RequestMethod.POST)
+
+	@RequestMapping(value = "/createGroup", method = RequestMethod.POST)
 	public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest) {
-		 Map<String, Object> creationResp = expensesServices.createGroup(groupRequest);
-			 return ResponseEntity.ok(creationResp);
+		Map<String, Object> creationResp = expensesServices.createGroup(groupRequest);
+		return ResponseEntity.ok(creationResp);
 
 	}
-	
-	
+
 	/* by using group name we can add any number of users in that group */
-	
-	@RequestMapping(value="/addUsersByGroup" ,method = RequestMethod.POST)
+
+	@RequestMapping(value = "/addUsersByGroup", method = RequestMethod.POST)
 	public ResponseEntity<?> addUsersByGroup(@RequestBody GroupRequest groupRequest) {
-		  Map<String, Object> userResp = expensesServices.addUsersByGroup(groupRequest);
-		 return ResponseEntity.ok(userResp);
+		Map<String, Object> userResp = expensesServices.addUsersByGroup(groupRequest);
+		return ResponseEntity.ok(userResp);
 
 	}
-	
-	
+
 	/* users can add all items with their respective prices */
-	
-	@RequestMapping(value="/addExpensesByUser" ,method = RequestMethod.POST)
+
+	@RequestMapping(value = "/addExpensesByUser", method = RequestMethod.POST)
 	public ResponseEntity<?> addExpensesByUser(@RequestBody ExpensesRequest expensesRequest) {
-		  Map<String, Object> items = expensesServices.addExpensesByUser(expensesRequest);
-			 return ResponseEntity.ok(items);
+		Map<String, Object> items = expensesServices.addExpensesByUser(expensesRequest);
+		return ResponseEntity.ok(items);
 
 	}
-	
-	
+
 	/*
 	 * by perticular group id we can fetch all the users with how much money they
 	 * need to receive and how much they need give
@@ -65,11 +61,8 @@ public class MyController {
 
 	@GetMapping("/calculateExpeses/{groupId}")
 	public ResponseEntity<?> calculateExpeses(@PathVariable("groupId") Long groupId) {
-		List<ExpensesResponse> expensesList = expensesServices.calculateExpenses(groupId);
-		 if(expensesList.size()>0)
-			 return ResponseEntity.status(HttpStatus.OK).body(expensesList);
-		 else 
-			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("calculations of expenses failed.");
+		Map<String, Object> expensesList = expensesServices.calculateExpenses(groupId);
+		return ResponseEntity.ok(expensesList);
 
 	}
 
