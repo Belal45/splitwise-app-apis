@@ -13,7 +13,7 @@ public interface ExpensesServices {
 	
 	public  Map<String, Object> createGroup(GroupRequest groupRequest);
 	public  Map<String, Object>  addUsersByGroup(GroupRequest groupRequest);
-	public  List<UserItems> addExpensesByUser(ExpensesRequest expensesRequest);
+	public  Map<String, Object> addExpensesByUser(ExpensesRequest expensesRequest);
 	public  List<ExpensesResponse> calculateExpenses(Long groupId);
 	
 }
