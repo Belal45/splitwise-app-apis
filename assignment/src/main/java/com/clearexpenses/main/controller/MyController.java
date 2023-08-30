@@ -27,7 +27,7 @@ public class MyController {
 	private ExpensesServices expensesServices;
 	
 	
-	/* create the new expenses group */
+	/* controller to create the new expenses group */
 	
 	@RequestMapping(value="/createGroup" ,method = RequestMethod.POST)
 	public ResponseEntity<String> createGroup(@RequestBody GroupRequest groupRequest) {
