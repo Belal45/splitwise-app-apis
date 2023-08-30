@@ -19,7 +19,7 @@ public class UserItems {
 	@Column(name="item_name")
 	private String name;
 	@Column(name="user_id")
-	private Long userid;
+	private String userid;
 	@Column(name="item_price")
 	private float price;
 	@Column(name="purchased_date")
@@ -39,10 +39,10 @@ public class UserItems {
 		this.name = name;
 	}
 
-	public Long getUserid() {
+	public String getUserid() {
 		return userid;
 	}
-	public void setUserid(Long userid) {
+	public void setUserid(String userid) {
 		this.userid = userid;
 	}
 	public float getPrice() {

@@ -52,11 +52,8 @@ public class MyController {
 	
 	@RequestMapping(value="/addExpensesByUser" ,method = RequestMethod.POST)
 	public ResponseEntity<?> addExpensesByUser(@RequestBody ExpensesRequest expensesRequest) {
-		  List<UserItems> items = expensesServices.addExpensesByUser(expensesRequest);
-		 if(items.size()>0)
-			 return ResponseEntity.status(HttpStatus.OK).body(items);
-		 else 
-			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("getting of items got failed.");
+		  Map<String, Object> items = expensesServices.addExpensesByUser(expensesRequest);
+			 return ResponseEntity.ok(items);
 
 	}
 	

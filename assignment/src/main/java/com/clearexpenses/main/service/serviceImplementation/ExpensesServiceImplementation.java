@@ -124,7 +124,8 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 	}
 
 	@Override
-	public List<UserItems> addExpensesByUser(ExpensesRequest expensesRequest) {
+	public Map<String, Object> addExpensesByUser(ExpensesRequest expensesRequest) {
+		Map<String, Object> responseJson = new HashMap<>();
 
 		List<UserItems> list = new ArrayList<UserItems>();
 		LocalDate current = LocalDate.now();
@@ -138,21 +139,33 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 					UserItems items = new UserItems();
 					items.setName(itr.getItem_name());
 					items.setPrice(itr.getItem_price());
-					items.setUserid(userExist.get().getId());
+					items.setUserid(userExist.get().getMemberId());
 					items.setDate(current);
 					items.setGroupId(userExist.get().getExpensesGroup().getId());
 					list.add(items);
 				}
 
 				resp = itemsRespository.saveAll(list);
+				if (resp != null) {
+					responseJson.put("data", resp);
+					responseJson.put("status", "200");
+					responseJson.put("message", "success");
+				} else {
+					responseJson.put("status", "400");
+					responseJson.put("message", "something went wrong.");
+				}
+
+			} else {
+				responseJson.put("status", "404");
+				responseJson.put("message", "invalid user");
 
 			}
 		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+			responseJson.put("status", "500");
+			responseJson.put("message", "unable to proccess");
 		}
 
-		return resp;
+		return responseJson;
 	}
 
 	@Override
