@@ -1,5 +1,6 @@
 package com.clearexpenses.main.service.serviceImplementation;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
 import com.clearexpenses.main.dtos.ExpensesRequest;
@@ -26,20 +28,20 @@ import com.clearexpenses.main.service.ExpensesServices;
 
 @Service
 public class ExpensesServiceImplementation implements ExpensesServices {
-	
+
 	@Autowired
-	private  GroupRespository groupRespository;
+	private GroupRespository groupRespository;
 	@Autowired
 	private UserRepository userRepository;
-	
+
 	@Autowired
 	private ItemsRespository itemsRespository;
-	
+
 	@Override
 	public Map<String, Object> createGroup(GroupRequest groupRequest) {
 		Map<String, Object> responseJson = new HashMap<>();
-		ExpensesGroup groupResponse = groupRespository.findByName(groupRequest.getGroup_name());		
-		if(groupResponse==null) {
+		ExpensesGroup groupResponse = groupRespository.findByName(groupRequest.getGroup_name());
+		if (groupResponse == null) {
 			ExpensesGroup res = null;
 			try {
 				Date currentDate = new Date();
@@ -63,43 +65,61 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 				responseJson.put("statusMessage", "group creation got failed.");
 
 			}
-		}else {
+		} else {
 			responseJson.put("statusCode", "404");
 			responseJson.put("statusMessage", "this group is already created.");
 
 		}
-	
 
-	
 		return responseJson;
 
 	}
-	
-	
+
 	@Override
-	public List<Users> addUsersByGroup(GroupRequest groupRequest) {
+	public Map<String, Object> addUsersByGroup(GroupRequest groupRequest) {
+		Map<String, Object> responseJson = new HashMap<>();
+
 		List<Users> userList = new ArrayList<Users>();
 
 		ExpensesGroup groupObject = groupRespository.findByName(groupRequest.getGroup_name());
 
-		System.out.println("not found :" + groupObject);
-		try {
-			if (groupObject != null) {
+		if (groupObject != null) {
+			try {
+				Date currentDate = new Date();
+				SimpleDateFormat dateFormat = new SimpleDateFormat();
 				for (int i = 0; i < groupRequest.getUsers().size(); i++) {
 					Users user = new Users();
 					user.setName(groupRequest.getUsers().get(i).getUser_name());
 					user.setMobile(groupRequest.getUsers().get(i).getMobile_number());
 					user.setAddress(groupRequest.getUsers().get(i).getAddress());
+					user.setMemberId(groupRequest.getUsers().get(i).getMemberId());
 					user.setExpensesGroup(groupObject);
+					user.setStatus(true);
+					user.setCreateDate(dateFormat.format(currentDate));
+					user.setUpdateDate(dateFormat.format(currentDate));
 					userList.add(user);
+
 				}
+				List<Users> resp = userRepository.saveAll(userList);
+				if (resp != null && resp.size() > 0) {
+					responseJson.put("data", resp);
+					responseJson.put("status", "200");
+					responseJson.put("message", "success.");
+				} else {
+					responseJson.put("status", "400");
+					responseJson.put("message", "something went wrong.");
+				}
+			} catch (Exception e) {
+				responseJson.put("status", "500");
+				responseJson.put("message", "unable to process.");
 			}
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
+		} else {
+			responseJson.put("status", "404");
+			responseJson.put("message", "requested group is not found.");
+
 		}
 
-		return userRepository.saveAll(userList);
+		return responseJson;
 
 	}
 

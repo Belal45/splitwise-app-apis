@@ -33,9 +33,6 @@ public class MyController {
 	@RequestMapping(value="/createGroup" ,method = RequestMethod.POST)
 	public ResponseEntity<?> createGroup(@RequestBody GroupRequest groupRequest) {
 		 Map<String, Object> creationResp = expensesServices.createGroup(groupRequest);
-		 if(creationResp.get("statusCode").equals("200"))
-			 return ResponseEntity.ok(creationResp);
-		 else 
 			 return ResponseEntity.ok(creationResp);
 
 	}
@@ -44,12 +41,9 @@ public class MyController {
 	/* by using group name we can add any number of users in that group */
 	
 	@RequestMapping(value="/addUsersByGroup" ,method = RequestMethod.POST)
-	public ResponseEntity<String> addUsersByGroup(@RequestBody GroupRequest groupRequest) {
-		  List<Users> status = expensesServices.addUsersByGroup(groupRequest);
-		 if(status.size()>0)
-			 return ResponseEntity.status(HttpStatus.OK).body("user added successfully.");
-		 else 
-			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("user creation get failed.");
+	public ResponseEntity<?> addUsersByGroup(@RequestBody GroupRequest groupRequest) {
+		  Map<String, Object> userResp = expensesServices.addUsersByGroup(groupRequest);
+		 return ResponseEntity.ok(userResp);
 
 	}
 	
