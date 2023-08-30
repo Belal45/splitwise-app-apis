@@ -6,6 +6,7 @@ public class UsersDto {
 	private String user_name;
 	private String mobile_number;
 	private String address;
+	private String memberId;
 	public long getUser_id() {
 		return user_id;
 	}
@@ -29,6 +30,12 @@ public class UsersDto {
 	}
 	public void setAddress(String address) {
 		this.address = address;
+	}
+	public String getMemberId() {
+		return memberId;
+	}
+	public void setMemberId(String memberId) {
+		this.memberId = memberId;
 	}
 	
 
