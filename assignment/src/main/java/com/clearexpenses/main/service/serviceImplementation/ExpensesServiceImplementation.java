@@ -42,7 +42,7 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 		Map<String, Object> responseJson = new HashMap<>();
 		ExpensesGroup groupResponse = groupRespository.findByName(groupRequest.getGroup_name());
 		if (groupResponse == null) {
-			ExpensesGroup res = null;
+			ExpensesGroup response = null;
 			try {
 				Date currentDate = new Date();
 				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-YYYY mm:hh:ss");
@@ -52,11 +52,11 @@ public class ExpensesServiceImplementation implements ExpensesServices {
 				expensesGroup.setCreateDate(dateFormat.format(currentDate));
 				expensesGroup.setUpdateDate(dateFormat.format(currentDate));
 				expensesGroup.setUsers(null);
-				res = groupRespository.save(expensesGroup);
+				response = groupRespository.save(expensesGroup);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (res.getId() != 0) {
+			if (response.getId() != 0) {
 				responseJson.put("statusCode", "200");
 				responseJson.put("statusMessage", "group successfully created.");
 
